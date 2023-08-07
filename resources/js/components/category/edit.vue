@@ -37,19 +37,15 @@ export default {
         };
     },
     created() {
-        // Ambil data kategori dari server ketika komponen di-mount
         this.fetchCategoryData();
     },
     methods: {
         fetchCategoryData() {
-            // Mengambil ID dari parameter URL menggunakan $route.params
             const categoryId = this.$route.params.id;
 
-            // Ganti dengan URL endpoint yang sesuai untuk mengambil data kategori berdasarkan ID
             axios
                 .get(`/api/category/${categoryId}`)
                 .then((response) => {
-                    // Simpan data kategori yang diambil dari server ke variabel categoryName
                     this.categoryName = response.data.data.name;
                 })
                 .catch((error) => {
@@ -57,20 +53,16 @@ export default {
                 });
         },
         saveCategory() {
-            // Mengambil ID dari parameter URL menggunakan $route.params
             const categoryId = this.$route.params.id;
 
-            // Ganti dengan URL endpoint yang sesuai untuk menyimpan data kategori yang diubah
             axios
                 .put(`/api/category/${categoryId}`, {
                     name: this.categoryName,
                 })
                 .then((response) => {
-                    // Tindakan setelah sukses menyimpan data
                     this.$router.go(-1);
                 })
                 .catch((error) => {
-                    // Tindakan jika terjadi kesalahan
                     console.error("Error updating category:", error);
                 });
         },

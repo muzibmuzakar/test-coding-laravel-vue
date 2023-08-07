@@ -49,6 +49,14 @@
                 <span class="hide-menu">Transaction</span>
               </router-link>
             </li>
+            <li class="sidebar-item">
+              <router-link class="sidebar-link" to="/report" aria-expanded="false">
+                <span>
+                  <i class="ti ti-file-analytics"></i>
+                </span>
+                <span class="hide-menu">Report</span>
+              </router-link>
+            </li>
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

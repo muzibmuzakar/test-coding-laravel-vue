@@ -42,7 +42,6 @@ export default {
                     this.$router.go(-1);
                 })
                 .catch((error) => {
-                    // Tindakan jika terjadi kesalahan
                     console.error("Error saving category:", error);
                 });
         },

@@ -123,7 +123,7 @@ export default {
   created() {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // Tambah 1 karena Januari dimulai dari 0
+    const month = String(now.getMonth() + 1).padStart(2, "0");
     this.selectedMonth = `${year}-${month}`;
     this.fetchReport();
   },
@@ -161,7 +161,10 @@ export default {
         });
     },
     exportToExcel() {
-      const data = [['Category', 'Amount']];
+        const data = [
+    ['', this.selectedMonth], // Tambah baris untuk informasi bulan dan tahun
+    ['Category', 'Amount'] // Header kolom
+  ];
       
       // Mengumpulkan data dari tabelData ke dalam format array 2D
       this.tableData.forEach(item => {
