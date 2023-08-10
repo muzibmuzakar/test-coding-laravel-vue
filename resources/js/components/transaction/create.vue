@@ -13,18 +13,20 @@
                 <div class="mb-3">
                   <label for="name" class="form-label">Chart of Account</label>
                   <select class="form-control" v-model="coa_id">
-                    <option v-for="item in coa" :key="item.id" :value="item.id">{{ item.name }}</option>
+                    <optgroup v-for="type in coaType" :label="type" :key="type">
+                      <option v-for="coa in coaByType(type)" :key="coa.id" :value="coa.id">{{ coa.name }}</option>
+                    </optgroup>
                   </select>
                 </div>
                 <div class="mb-3">
                   <label for="name" class="form-label">Desc</label>
                   <textarea class="form-control" v-model="desc"></textarea>
                 </div>
-                <div class="mb-3" v-if="coa_id === 4 || coa_id === 5 || coa_id === 6 || coa_id === 7 || coa_id === 8">
+                <div class="mb-3" v-if="coa_id && coa.find(item => item.id === coa_id).category.type === 'debit'">
                   <label for="name" class="form-label">Debit</label>
                   <input type="number" class="form-control" v-model="debit" />
                 </div>
-                <div class="mb-3" v-if="coa_id === 1 || coa_id === 2 || coa_id === 3">
+                <div class="mb-3" v-if="coa_id && coa.find(item => item.id === coa_id).category.type === 'credit'">
                   <label for="name" class="form-label">Credit</label>
                   <input type="number" class="form-control" v-model="credit" />
                 </div>
@@ -56,6 +58,11 @@
     created() {
       this.fetchCoa();
     },
+    computed: {
+      coaType() {
+        return [...new Set(this.coa.map(coa => coa.category.name))];
+      }
+    },
     methods: {
       fetchCoa() {
         axios
@@ -64,8 +71,11 @@
             this.coa = response.data.data;
           })
           .catch((error) => {
-            console.error("Error fetching categories:", error);
+            console.error("Error fetching coa:", error);
           });
+      },
+      coaByType(type) {
+        return this.coa.filter(coa => coa.category.name === type);
       },
       saveTransaction() {
         const url = "/api/transaction";

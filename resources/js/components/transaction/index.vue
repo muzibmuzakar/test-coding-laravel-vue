@@ -41,6 +41,7 @@
                         </td>
                         <td class="border-bottom-0">
                             {{ item.coa.name }}
+                            {{ item.coa.category.type }}
                         </td>
                         <td class="border-bottom-0">
                             {{ item.desc }}

@@ -13,9 +13,24 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $data = Transaction::get();
+        $data = Transaction::leftJoin('coas', 'transactions.coa_id', '=', 'coas.id')
+        ->leftJoin('categories', 'coas.category_id', '=', 'categories.id')
+        ->select(
+            'transactions.id',
+            'transactions.date',
+            'transactions.desc',
+            'transactions.debit',
+            'transactions.credit',
+            'coas.id as coa_id',
+            'coas.code as coa_code',
+            'coas.name as coa_name',
+            'categories.id as category_id',
+            'categories.name as category_name',
+            'categories.type as category_type',
+        )
+        ->get();
 
-        return TransactionResource::collection($data);
+    return TransactionResource::collection($data);
     }
 
     /**

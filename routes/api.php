@@ -26,4 +26,4 @@ Route::resource('category', CategoryController::class);
 Route::resource('coa', CoaController::class);
 Route::resource('transaction', TransactionController::class);
 Route::get('/report', [ReportController::class, 'index']);
-Route::get('/report/{month}', [ReportController::class, 'filterByMonth']);
+Route::get('/report/{category}/{month}', [ReportController::class, 'filterByMonth']);

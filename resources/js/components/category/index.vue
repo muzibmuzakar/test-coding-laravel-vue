@@ -18,6 +18,9 @@
                           <h6 class="fw-semibold mb-0">Name</h6>
                         </th>
                         <th class="border-bottom-0">
+                          <h6 class="fw-semibold mb-0">Type</h6>
+                        </th>
+                        <th class="border-bottom-0">
                         </th>
                       </tr>
                     </thead>
@@ -26,6 +29,9 @@
                         <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ category.id }}</h6></td>
                         <td class="border-bottom-0">
                             <h6 class="fw-semibold mb-1">{{ category.name }}</h6>
+                        </td>
+                        <td class="border-bottom-0">
+                            <h6 class="fw-semibold mb-1">{{ category.type }}</h6>
                         </td>
                         <td class="border-bottom-0">
                             <router-link :to="{ name: 'edit-category', params: { id: category.id } }" class="btn btn-sm btn-warning mx-2">Edit</router-link>

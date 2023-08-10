@@ -10,11 +10,10 @@
                                 <label for="name" class="form-label"
                                     >Name</label
                                 >
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="categoryName"
-                                />
+                                <select class="form-control" v-model="categoryType">
+                                    <option value="debit">Debit</option>
+                                    <option value="credit">Credit</option>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 Submit

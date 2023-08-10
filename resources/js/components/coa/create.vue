@@ -17,7 +17,9 @@
                 <div class="mb-3">
                   <label for="name" class="form-label">Category</label>
                   <select class="form-control" v-model="category">
-                    <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                    <optgroup v-for="type in categoryType" :label="type" :key="type">
+                      <option v-for="cat in categoriesByType(type)" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                    </optgroup>
                   </select>
                 </div>
                 <button type="submit" class="btn btn-primary">
@@ -46,6 +48,11 @@
     created() {
       this.fetchCategories();
     },
+    computed: {
+      categoryType() {
+        return [...new Set(this.categories.map(cat => cat.type))];
+      }
+    },
     methods: {
       fetchCategories() {
         axios
@@ -56,6 +63,9 @@
           .catch((error) => {
             console.error("Error fetching categories:", error);
           });
+      },
+      categoriesByType(type) {
+        return this.categories.filter(cat => cat.type === type);
       },
       saveCoa() {
         const url = "/api/coa";

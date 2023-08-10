@@ -13,7 +13,9 @@ class CoaController extends Controller
      */
     public function index()
     {
-        $data = Coa::get();
+        $data = Coa::leftJoin('categories', 'categories.id', '=', 'coas.category_id')
+            ->select('coas.id', 'coas.code', 'coas.name', 'categories.id as category_id', 'categories.name as category_name', 'categories.type as category_type')
+            ->get();
 
         return CoaResource::collection($data);
     }
@@ -47,7 +49,10 @@ class CoaController extends Controller
      */
     public function show(string $id)
     {
-        $data = Coa::where('id', $id)->first();
+        $data = Coa::leftJoin('categories', 'categories.id', '=', 'coas.category_id')
+        ->select('coas.id', 'coas.code', 'coas.name', 'categories.id as category_id', 'categories.name as category_name', 'categories.type as category_type')
+        ->where('coas.id', $id)
+        ->first();
 
         return new CoaResource($data);
     }

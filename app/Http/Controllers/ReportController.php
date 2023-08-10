@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReportResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -48,54 +49,27 @@ class ReportController extends Controller
         ]);
     }
 
-    public function filterByMonth($month)
+    public function filterByMonth($category,$month)
     {
-        $salary = Transaction::whereHas('coa', function ($query) {
-            $query->whereHas('category', function ($query) {
-                $query->where('name', 'salary');
-            });
-        })
-        ->whereMonth('date', $month)
+        $salary = Transaction::leftJoin('coas', 'transactions.coa_id', '=', 'coas.id')
+        ->leftJoin('categories', 'coas.category_id', '=', 'categories.id')
+        ->where('categories.id', $category)
+        ->whereMonth('transactions.date', $month)
+        ->select(
+            'transactions.id',
+            'transactions.date',
+            'transactions.desc',
+            'transactions.debit',
+            'transactions.credit',
+            'coas.id as coa_id',
+            'coas.code as coa_code',
+            'coas.name as coa_name',
+            'categories.id as category_id',
+            'categories.name as category_name',
+            'categories.type as category_type',
+        )
         ->get();
 
-        $otherIncome = Transaction::whereHas('coa', function ($query) {
-            $query->whereHas('category', function ($query) {
-                $query->where('name', 'other income');
-            });
-        })
-        ->whereMonth('date', $month)
-        ->get();
-
-        $familyExpanse = Transaction::whereHas('coa', function ($query) {
-            $query->whereHas('category', function ($query) {
-                $query->where('name', 'Family Expense');
-            });
-        })
-        ->whereMonth('date', $month)
-        ->get();
-
-        $transportExpense = Transaction::whereHas('coa', function ($query) {
-            $query->whereHas('category', function ($query) {
-                $query->where('name', 'Transport Expense');
-            });
-        })
-        ->whereMonth('date', $month)
-        ->get();
-
-        $mealExpense = Transaction::whereHas('coa', function ($query) {
-            $query->whereHas('category', function ($query) {
-                $query->where('name', 'Meal Expense');
-            });
-        })
-        ->whereMonth('date', $month)
-        ->get();
-        
-        return response()->json([
-            'salary' => $salary,
-            'otherIncome' => $otherIncome,
-            'familyExpanse' => $familyExpanse,
-            'transportExpense' => $transportExpense,
-            'mealExpense' => $mealExpense,
-        ]);
+    return ReportResource::collection($salary);
     }
 }

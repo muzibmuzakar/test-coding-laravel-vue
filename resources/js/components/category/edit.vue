@@ -16,6 +16,15 @@
                                     v-model="categoryName"
                                 />
                             </div>
+                            <div class="mb-3">
+                                <label for="type" class="form-label"
+                                    >Type</label
+                                >
+                                <select class="form-control" v-model="categoryType">
+                                    <option value="debit">Debit</option>
+                                    <option value="credit">Credit</option>
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-primary">
                                 Submit
                             </button>
@@ -34,6 +43,7 @@ export default {
     data() {
         return {
             categoryName: "",
+            categoryType: "",
         };
     },
     created() {
@@ -46,7 +56,9 @@ export default {
             axios
                 .get(`/api/category/${categoryId}`)
                 .then((response) => {
-                    this.categoryName = response.data.data.name;
+                    const category = response.data.data
+                    this.categoryName = category.name;
+                    this.categoryType = category.type;
                 })
                 .catch((error) => {
                     console.error("Error fetching category data:", error);
@@ -58,6 +70,7 @@ export default {
             axios
                 .put(`/api/category/${categoryId}`, {
                     name: this.categoryName,
+                    type: this.categoryType,
                 })
                 .then((response) => {
                     this.$router.go(-1);
